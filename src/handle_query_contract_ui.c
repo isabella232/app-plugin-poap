@@ -18,7 +18,6 @@ static void set_token_ui(ethQueryContractUI_t *msg, context_t *context) {
                    msg->msgLength);
 }
 
-
 // Set UI for "Beneficiary" screen.
 static void set_beneficiary_ui(ethQueryContractUI_t *msg, context_t *context) {
     strlcpy(msg->title, "Beneficiary", msg->titleLength);
@@ -26,11 +25,7 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, context_t *context) {
     msg->msg[0] = '0';
     msg->msg[1] = 'x';
 
-    getEthAddressStringFromBinary(
-        context->beneficiary,
-        msg->msg + 2,
-        msg->pluginSharedRW->sha3,
-        0);
+    getEthAddressStringFromBinary(context->beneficiary, msg->msg + 2, msg->pluginSharedRW->sha3, 0);
 }
 
 // Set UI for "Warning" screen.

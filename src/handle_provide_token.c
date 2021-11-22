@@ -8,9 +8,7 @@ void handle_provide_token(void *parameters) {
 
     if (msg->token1 != NULL) {
         context->decimals = msg->token1->decimals;
-        strlcpy(context->ticker,
-                (char *) msg->token1->ticker,
-                sizeof(context->ticker));
+        strlcpy(context->ticker, (char *) msg->token1->ticker, sizeof(context->ticker));
         context->tokens_found |= TOKEN_RECEIVED_FOUND;
     } else {
         context->decimals = DEFAULT_DECIMAL;
