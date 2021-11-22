@@ -1,7 +1,7 @@
 import Zemu from '@zondax/zemu';
 import Eth from '@ledgerhq/hw-app-eth';
 import { generate_plugin_config } from './generate_plugin_config';
-import { parseEther, parseUnits, RLP} from "ethers/lib/utils";
+import { parseEther, parseUnits, RLP } from "ethers/lib/utils";
 
 const transactionUploadDelay = 60000;
 
@@ -24,11 +24,11 @@ const NANOX_ETH_PATH = Resolve('elfs/ethereum_nanox.elf');
 const NANOS_PLUGIN_PATH = Resolve('elfs/plugin_nanos.elf');
 const NANOX_PLUGIN_PATH = Resolve('elfs/plugin_nanox.elf');
 
-// Edit this: replace `Boilerplate` by your plugin name
-const NANOS_PLUGIN = { "Boilerplate": NANOS_PLUGIN_PATH };
-const NANOX_PLUGIN = { "Boilerplate": NANOX_PLUGIN_PATH };
+// Edit this: replace `Poap` by your plugin name
+const NANOS_PLUGIN = { "Poap": NANOS_PLUGIN_PATH };
+const NANOX_PLUGIN = { "Poap": NANOX_PLUGIN_PATH };
 
-const boilerplateJSON = generate_plugin_config();
+const poapJSON = generate_plugin_config();
 
 const SPECULOS_ADDRESS = '0xFE984369CE3919AA7BB4F431082D027B4F8ED70C';
 const RANDOM_ADDRESS = '0xaaaabbbbccccddddeeeeffffgggghhhhiiiijjjj'
@@ -100,7 +100,7 @@ function zemu(device, func) {
             const eth = new Eth(transport);
             eth.setPluginsLoadConfig({
                 baseURL: null,
-                extraPlugins: boilerplateJSON,
+                extraPlugins: poapJSON,
             });
             await func(sim, eth);
         } finally {

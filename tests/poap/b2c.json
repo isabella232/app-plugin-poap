@@ -10,10 +10,10 @@
                         "path.1"
                     ],
                     "method": "swapExactETHForTokens",
-                    "plugin": "Boilerplate"
-		        }
-	        }
-	    }
+                    "plugin": "Poap"
+                }
+            }
+        }
     ],
-    "name": "Boilerplate"
+    "name": "Poap"
 }
