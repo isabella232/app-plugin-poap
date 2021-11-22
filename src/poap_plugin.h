@@ -4,13 +4,12 @@
 #include "eth_plugin_interface.h"
 #include <string.h>
 
-
-#define NUM_SELECTORS 1
-#define PLUGIN_NAME "Poap"
+#define NUM_SELECTORS        1
+#define PLUGIN_NAME          "Poap"
 #define TOKEN_RECEIVED_FOUND 1 << 1
-#define SELECTOR_SIZE 4
-#define PARAMETER_LENGTH 32
-#define RUN_APPLICATION 1
+#define SELECTOR_SIZE        4
+#define PARAMETER_LENGTH     32
+#define RUN_APPLICATION      1
 
 // Number of decimals used when the token wasn't found in the CAL.
 #define DEFAULT_DECIMAL WEI_TO_ETHER
