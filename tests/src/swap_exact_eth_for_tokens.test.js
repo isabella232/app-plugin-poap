@@ -1,13 +1,13 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
-import { waitForAppScreen, zemu, genericTx, SPECULOS_ADDRESS, RANDOM_ADDRESS, txFromEtherscan} from './test.fixture';
+import { waitForAppScreen, zemu, genericTx, SPECULOS_ADDRESS, RANDOM_ADDRESS, txFromEtherscan } from './test.fixture';
 import { ethers } from "ethers";
-import { parseEther, parseUnits} from "ethers/lib/utils";
+import { parseEther, parseUnits } from "ethers/lib/utils";
 
 // EDIT THIS: Replace with your contract address
 const contractAddr = "0x7a250d5630b4cf539739df2c5dacb4c659f2488d";
-// EDIT THIS: Replace `boilerplate` with your plugin name
-const pluginName = "boilerplate";
+// EDIT THIS: Replace `poap` with your plugin name
+const pluginName = "poap";
 const abi_path = `../${pluginName}/abis/` + contractAddr + '.json';
 const abi = require(abi_path);
 
@@ -32,7 +32,7 @@ test('[Nano S] Swap Exact Eth For Tokens with beneficiary', zemu("nanos", async 
   // EDIT THIS: adapt the signature to your method
   // signature: swapExactETHForTokens(uint amountOutMin, address[] calldata path, address to, uint deadline)
   // EDIT THIS: don't call `swapExactETHForTokens` but your own method and adapt the arguments.
-  const {data} = await contract.populateTransaction.swapExactETHForTokens(amountOutMin, path, beneficiary, deadline);
+  const { data } = await contract.populateTransaction.swapExactETHForTokens(amountOutMin, path, beneficiary, deadline);
 
   // Get the generic transaction template
   let unsignedTx = genericTx;
