@@ -24,18 +24,12 @@
 
 #include "poap_plugin.h"
 
-// List of selectors supported by this plugin.
-// EDIT THIS: Adapt the variable names and change the `0x` values to match your selectors.
-static const uint8_t SWAP_EXACT_ETH_FOR_TOKENS_SELECTOR[SELECTOR_SIZE] = {0x7f, 0xf3, 0x6a, 0xb5};
-static const uint8_t POAP_DUMMY_SELECTOR_2[SELECTOR_SIZE] = {0x13, 0x37, 0x42, 0x42};
+// Function: mintToken(uint256 eventId, uint256 tokenId, address receiver, bytes signedMessage)
+// Selector: 0x3da5b8f0
+static const uint8_t MINT_TOKEN_SELECTOR[SELECTOR_SIZE] = {0x3d, 0xa5, 0xb8, 0xf0};
 
-// Array of all the different poap selectors. Make sure this follows the same order as the
-// enum defined in `poap_plugin.h`
-// EDIT THIS: Use the names of the array declared above.
-const uint8_t *const POAP_SELECTORS[NUM_SELECTORS] = {
-    SWAP_EXACT_ETH_FOR_TOKENS_SELECTOR,
-    POAP_DUMMY_SELECTOR_2,
-};
+// Array of all the different poap selectors.
+const uint8_t *const POAP_SELECTORS[NUM_SELECTORS] = {MINT_TOKEN_SELECTOR};
 
 // Function to dispatch calls from the ethereum app.
 void dispatch_plugin_calls(int message, void *parameters) {
