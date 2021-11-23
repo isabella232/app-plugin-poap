@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+void debug_write(const char *buf);
 
-// Printf that uses speculos semi-hosting features.
-void semihosted_printf(const char *format, ...);
+int semihosted_printf(const char *format, ...);
+void print_bytes(const uint8_t *bytes, uint16_t len);

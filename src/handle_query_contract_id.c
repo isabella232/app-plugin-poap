@@ -2,7 +2,7 @@
 
 void handle_query_contract_id(void *parameters) {
     ethQueryContractID_t *msg = (ethQueryContractID_t *) parameters;
-    context_t *context = (context_t *) msg->pluginContext;
+    poap_parameters_t *context = (poap_parameters_t *) msg->pluginContext;
 
     strlcpy(msg->name, PLUGIN_NAME, msg->nameLength);
 
