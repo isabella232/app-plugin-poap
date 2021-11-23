@@ -2,14 +2,14 @@
     "chainId": 1,
     "contracts": [
         {
-            "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
-            "contractName": "UniswapV2",
+            "address": "0x6F2235864Cf897078FcdCC2854b76C482cd16874",
+            "contractName": "PoapDelegatedMint",
             "selectors": {
-                "0x7ff36ab5": {
+                "0x3da5b8f0": {
                     "erc20OfInterest": [
-                        "path.1"
+                        "receiver"
                     ],
-                    "method": "swapExactETHForTokens",
+                    "method": "mintToken",
                     "plugin": "Poap"
                 }
             }
