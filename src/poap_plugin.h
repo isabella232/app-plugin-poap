@@ -10,7 +10,6 @@
 #define RUN_APPLICATION 1
 
 #define NUM_POAP_SELECTORS 1
-#define SELECTOR_SIZE          4
 
 #define PLUGIN_NAME "Poap"
 
