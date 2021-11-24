@@ -2,7 +2,7 @@
     "chainId": 1,
     "contracts": [
         {
-            "address": "0x6F2235864Cf897078FcdCC2854b76C482cd16874",
+            "address": "0x6f2235864cf897078fcdcc2854b76c482cd16874",
             "contractName": "PoapDelegatedMint",
             "selectors": {
                 "0x3da5b8f0": {
