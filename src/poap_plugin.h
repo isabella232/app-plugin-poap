@@ -10,7 +10,6 @@
 #define RUN_APPLICATION 1
 
 #define NUM_POAP_SELECTORS 1
-#define SELECTOR_SIZE      4
 
 #define PLUGIN_NAME "Poap"
 
@@ -30,6 +29,7 @@ typedef enum {
 
 // Would've loved to make this an enum but we don't have enough room because enums are `int` and not
 // `uint8_t`.
+
 #define EVENT_ID       0
 #define TOKEN_RECEIVED 1
 #define BENEFICIARY    2

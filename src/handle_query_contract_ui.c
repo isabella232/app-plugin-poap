@@ -11,12 +11,6 @@ static void set_send_ui(ethQueryContractUI_t *msg, poap_parameters_t *context) {
             msg->result = ETH_PLUGIN_RESULT_ERROR;
             return;
     }
-    // amountToString(context->amount_sent,
-    //                sizeof(context->amount_sent),
-    //                context->decimals_sent,
-    //                context->ticker_sent,
-    //                msg->msg,
-    //                msg->msgLength);
 }
 // Set UI for "Receive" screen.
 static void set_receive_ui(ethQueryContractUI_t *msg, poap_parameters_t *context) {
@@ -103,7 +97,7 @@ void handle_query_contract_ui(void *parameters) {
             set_beneficiary_ui(msg, context);
             break;
         case BENEFICIARY_SCREEN:
-            set_warning_ui(msg, context);
+            set_beneficiary_ui(msg, context);
             break;
         default:
             PRINTF("Received an invalid screenIndex\n");
