@@ -9,7 +9,6 @@ function serialize_data(pluginName, contractAddress, selector) {
 	const name = Buffer.from(pluginName)
 	const address = Buffer.from(contractAddress.slice(2), "hex");
 	const methodid = Buffer.from(selector.slice(2), "hex");
-
 	// Taking .slice(2) to remove the "0x" prefix
 	return Buffer.concat([len, name, address, methodid]);
 }
