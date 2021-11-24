@@ -8,7 +8,8 @@ static void handle_beneficiary(const ethPluginProvideParameter_t *msg, poap_para
     PRINTF("BENEFICIARY: %.*H\n", ADDRESS_LENGTH, context->beneficiary);
 }
 
-static void handle_token_received(const ethPluginProvideParameter_t *msg, poap_parameters_t *context) {
+static void handle_token_received(const ethPluginProvideParameter_t *msg,
+                                  poap_parameters_t *context) {
     memset(context->token_received, 0, sizeof(context->token_received));
     memcpy(context->token_received,
            &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
@@ -18,7 +19,7 @@ static void handle_token_received(const ethPluginProvideParameter_t *msg, poap_p
 
 static void handle_mint_token(ethPluginProvideParameter_t *msg, poap_parameters_t *context) {
     switch (context->next_param) {
-       case EVENT_ID:
+        case EVENT_ID:
             context->next_param = TOKEN_RECEIVED;
             break;
         case TOKEN_RECEIVED:  // path[1] -> id of the token received

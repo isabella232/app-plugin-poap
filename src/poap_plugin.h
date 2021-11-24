@@ -15,9 +15,7 @@
 
 #define TOKEN_RECEIVED_FOUND 1 << 1
 
-typedef enum {
-    MINT_TOKEN
-} poapSelector_t;
+typedef enum { MINT_TOKEN } poapSelector_t;
 
 extern const uint8_t *const POAP_SELECTORS[NUM_POAP_SELECTORS];
 
@@ -31,9 +29,10 @@ typedef enum {
 
 // Would've loved to make this an enum but we don't have enough room because enums are `int` and not
 // `uint8_t`.
-#define EVENT_ID       0  
-#define TOKEN_RECEIVED 1 
-#define BENEFICIARY    2 
+
+#define EVENT_ID       0
+#define TOKEN_RECEIVED 1
+#define BENEFICIARY    2
 #define NONE           3
 
 // Number of decimals used when the token wasn't found in the CAL.
