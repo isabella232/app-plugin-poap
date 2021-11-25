@@ -20,10 +20,10 @@ const NANOX_ETH_PATH = Resolve("elfs/ethereum_nanox.elf");
 const NANOS_PLUGIN_PATH = Resolve("elfs/poap_nanos.elf");
 const NANOX_PLUGIN_PATH = Resolve("elfs/poap_nanox.elf");
 
-const NANOS_PLUGIN = { Paraswap: NANOS_PLUGIN_PATH };
-const NANOX_PLUGIN = { Paraswap: NANOX_PLUGIN_PATH };
+const NANOS_PLUGIN = { Poap: NANOS_PLUGIN_PATH };
+const NANOX_PLUGIN = { Poap: NANOX_PLUGIN_PATH };
 
-const paraswapJSON = generate_plugin_config();
+const poapJSON = generate_plugin_config();
 
 const SPECULOS_ADDRESS = "0xFE984369CE3919AA7BB4F431082D027B4F8ED70C";
 const RANDOM_ADDRESS = "0xaaaabbbbccccddddeeeeffffgggghhhhiiiijjjj";
@@ -104,10 +104,10 @@ function zemu(device, func, signed = false) {
       const transport = await sim.getTransport();
       const eth = new Eth(transport);
 
-      if(!signed){
+      if (!signed) {
         eth.setPluginsLoadConfig({
           baseURL: null,
-          extraPlugins: paraswapJSON,
+          extraPlugins: poapJSON,
         });
       }
       await func(sim, eth);
@@ -147,7 +147,7 @@ async function processTransaction(eth, sim, steps, label, rawTxHex) {
  * @param {string} rawTxHex RawTx Hex to test
  * @param {boolean} signed The plugin is already signed and existing in Ledger database
  */
-function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, signed ) {
+function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, signed) {
   test(
     "[" + contractName + "] - " + device.label + " - " + testLabel,
     zemu(device.name, async (sim, eth) => {
@@ -158,7 +158,7 @@ function processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, s
         device.name + "_" + testDirSuffix,
         rawTxHex
       );
-    },signed)
+    }, signed)
   );
 }
 
