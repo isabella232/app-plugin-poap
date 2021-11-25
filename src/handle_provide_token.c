@@ -2,7 +2,7 @@
 
 void handle_provide_token(void *parameters) {
     ethPluginProvideToken_t *msg = (ethPluginProvideToken_t *) parameters;
-    poap_parameters_t *context = (poap_parameters_t *) msg->pluginContext;
+    context_t *context = (context_t *) msg->pluginContext;
 
     PRINTF("POAP plugin provide token: 0x%p\n", msg->token1);
 

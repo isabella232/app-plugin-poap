@@ -1,7 +1,4 @@
 #include "poap_plugin.h"
-#if !defined(MIN)
-#define MIN(x, y) ((x) < (y) ? (x) : (y))
-#endif  // MIN
 
 // Copies the whole parameter (32 bytes long) from `src` to `dst`.
 // Useful for numbers, data...
@@ -9,19 +6,17 @@ static void copy_parameter(uint8_t *dst, size_t dst_len, uint8_t *src) {
     memcpy(dst, src, PARAMETER_LENGTH);
 }
 // Copy token sent parameter to poap_token
-static void handle_token(const ethPluginProvideParameter_t *msg,
-                                   context_t *context) {
+static void handle_token(const ethPluginProvideParameter_t *msg, context_t *context) {
     copy_parameter(context->poap_token, sizeof(context->poap_token), msg->parameter);
 }
 
-static void handle_beneficiary(const ethPluginProvideParameter_t *msg, poap_parameters_t *context) {
+static void handle_beneficiary(const ethPluginProvideParameter_t *msg, context_t *context) {
     memset(context->beneficiary, 0, sizeof(context->beneficiary));
     memcpy(context->beneficiary,
            &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
            sizeof(context->beneficiary));
     PRINTF("BENEFICIARY: %.*H\n", ADDRESS_LENGTH, context->beneficiary);
 }
-
 
 static void handle_mint_token(ethPluginProvideParameter_t *msg, context_t *context) {
     switch (context->next_param) {
@@ -35,7 +30,7 @@ static void handle_mint_token(ethPluginProvideParameter_t *msg, context_t *conte
         case BENEFICIARY:  // to
             handle_beneficiary(msg, context);
             context->next_param = NONE;
-            context->skip = 1;
+            // context->skip = 1;
             break;
         case NONE:
             break;
@@ -57,11 +52,11 @@ void handle_provide_parameter(void *parameters) {
         context->skip--;
     } else {
         if ((context->offset) && msg->parameterOffset != context->checkpoint + context->offset) {
-        PRINTF("offset: %d, checkpoint: %d, parameterOffset: %d\n",
-               context->offset,
-               context->checkpoint,
-               msg->parameterOffset);
-        return;
+            PRINTF("offset: %d, checkpoint: %d, parameterOffset: %d\n",
+                   context->offset,
+                   context->checkpoint,
+                   msg->parameterOffset);
+            return;
         }
         context->offset = 0;
         switch (context->selectorIndex) {
@@ -75,5 +70,3 @@ void handle_provide_parameter(void *parameters) {
         }
     }
 }
-
-

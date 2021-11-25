@@ -4,12 +4,12 @@
 #include "eth_plugin_interface.h"
 #include <string.h>
 
-#define NUM_SELECTORS        1
-#define PLUGIN_NAME          "Poap"
-#define TOKEN_FOUND 1 << 1
-#define SELECTOR_SIZE        4
-#define PARAMETER_LENGTH     32
-#define RUN_APPLICATION      1
+#define NUM_SELECTORS    1
+#define PLUGIN_NAME      "Poap"
+#define TOKEN_FOUND      1 << 1
+#define SELECTOR_SIZE    4
+#define PARAMETER_LENGTH 32
+#define RUN_APPLICATION  1
 
 // Number of decimals used when the token wasn't found in the CAL.
 #define DEFAULT_DECIMAL WEI_TO_ETHER
@@ -41,7 +41,7 @@ extern const uint8_t *const POAP_SELECTORS[NUM_SELECTORS];
 typedef struct context_t {
     // For display.
     uint8_t beneficiary[ADDRESS_LENGTH];
-    uint8_t poap_token[ADDRESS_LENGTH]; // not crypto token dedicated poap token value int number
+    uint8_t poap_token[PARAMETER_LENGTH];  // not crypto token dedicated poap token value int number
     char ticker[MAX_TICKER_LEN];
     uint8_t decimals;
 

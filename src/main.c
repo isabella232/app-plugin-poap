@@ -17,11 +17,10 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "os.h"
 #include "cx.h"
-
-#include "glyphs.h"
 
 #include "poap_plugin.h"
 
@@ -30,9 +29,10 @@
 static const uint8_t MINT_TOKEN_SELECTOR[SELECTOR_SIZE] = {0x3d, 0xa5, 0xb8, 0xf0};
 
 // Array of all the different poap selectors.
-const uint8_t *const POAP_SELECTORS[NUM_POAP_SELECTORS] = {MINT_TOKEN_SELECTOR};
+const uint8_t *const POAP_SELECTORS[NUM_SELECTORS] = {MINT_TOKEN_SELECTOR};
 
-void poap_plugin_call(int message, void *parameters) {
+// Function to dispatch calls from the ethereum app.
+void dispatch_plugin_calls(int message, void *parameters) {
     switch (message) {
         case ETH_PLUGIN_INIT_CONTRACT:
             handle_init_contract(parameters);
@@ -58,6 +58,7 @@ void poap_plugin_call(int message, void *parameters) {
     }
 }
 
+// Calls the ethereum app.
 void call_app_ethereum() {
     unsigned int libcall_params[3];
     libcall_params[0] = (unsigned int) "Ethereum";
@@ -66,11 +67,12 @@ void call_app_ethereum() {
     os_lib_call((unsigned int *) &libcall_params);
 }
 
+// Weird low-level black magic. No need to edit this.
 __attribute__((section(".boot"))) int main(int arg0) {
-    // exit critical section
+    // Exit critical section
     __asm volatile("cpsie i");
 
-    // ensure exception will work as planned
+    // Ensure exception will work as planned
     os_boot();
 
     // Try catch block. Please read the docs for more information on how to use those!
@@ -78,20 +80,23 @@ __attribute__((section(".boot"))) int main(int arg0) {
         TRY {
             // Low-level black magic.
             check_api_level(CX_COMPAT_APILEVEL);
+
             // Check if we are called from the dashboard.
             if (!arg0) {
-                // called from dashboard, launch Ethereum app
+                // Called from dashboard, launch Ethereum app
                 call_app_ethereum();
                 return 0;
             } else {
                 // Not called from dashboard: called from the ethereum app!
-                const unsigned int *args = (unsigned int *) arg0;
+                unsigned int *args = (unsigned int *) arg0;
 
                 // If `ETH_PLUGIN_CHECK_PRESENCE` is set, this means the caller is just trying to
-                // know whether this app exists or not. We can skip `poap_plugin_call`.
+                // know whether this app exists or not. We can skip `dispatch_plugin_calls`.
                 if (args[0] != ETH_PLUGIN_CHECK_PRESENCE) {
-                    poap_plugin_call(args[0], (void *) args[1]);
+                    dispatch_plugin_calls(args[0], (void *) args[1]);
                 }
+
+                // Call `os_lib_end`, go back to the ethereum app.
                 os_lib_end();
             }
         }
@@ -100,5 +105,6 @@ __attribute__((section(".boot"))) int main(int arg0) {
     }
     END_TRY;
 
+    // Will not get reached.
     return 0;
 }
