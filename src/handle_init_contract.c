@@ -1,5 +1,6 @@
 #include "poap_plugin.h"
 
+// Called once to init.
 void handle_init_contract(void *parameters) {
     ethPluginInitContract_t *msg = (ethPluginInitContract_t *) parameters;
 
@@ -32,7 +33,6 @@ void handle_init_contract(void *parameters) {
     // Set `next_param` to be the first field we expect to parse.
     switch (context->selectorIndex) {
         case MINT_TOKEN:
-            // context->skip = 1;
             context->next_param = EVENT_ID;
             break;
         default:
