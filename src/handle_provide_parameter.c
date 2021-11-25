@@ -1,6 +1,16 @@
 #include "poap_plugin.h"
 
-static void handle_beneficiary(const ethPluginProvideParameter_t *msg, poap_parameters_t *context) {
+// Copies the whole parameter (32 bytes long) from `src` to `dst`.
+// Useful for numbers, data...
+static void copy_parameter(uint8_t *dst, size_t dst_len, uint8_t *src) {
+    memcpy(dst, src, PARAMETER_LENGTH);
+}
+// Copy token sent parameter to poap_token
+static void handle_token(const ethPluginProvideParameter_t *msg, context_t *context) {
+    copy_parameter(context->poap_token, sizeof(context->poap_token), msg->parameter);
+}
+
+static void handle_beneficiary(const ethPluginProvideParameter_t *msg, context_t *context) {
     memset(context->beneficiary, 0, sizeof(context->beneficiary));
     memcpy(context->beneficiary,
            &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
@@ -8,27 +18,19 @@ static void handle_beneficiary(const ethPluginProvideParameter_t *msg, poap_para
     PRINTF("BENEFICIARY: %.*H\n", ADDRESS_LENGTH, context->beneficiary);
 }
 
-static void handle_token_received(const ethPluginProvideParameter_t *msg,
-                                  poap_parameters_t *context) {
-    memset(context->token_received, 0, sizeof(context->token_received));
-    memcpy(context->token_received,
-           &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
-           sizeof(context->token_received));
-    PRINTF("TOKEN RECEIVED: %.*H\n", ADDRESS_LENGTH, context->token_received);
-}
-
-static void handle_mint_token(ethPluginProvideParameter_t *msg, poap_parameters_t *context) {
+static void handle_mint_token(ethPluginProvideParameter_t *msg, context_t *context) {
     switch (context->next_param) {
         case EVENT_ID:
-            context->next_param = TOKEN_RECEIVED;
+            context->next_param = TOKEN;
             break;
-        case TOKEN_RECEIVED:  // path[1] -> id of the token received
-            handle_token_received(msg, context);
+        case TOKEN:  // path[1] -> id of the token received
+            handle_token(msg, context);
             context->next_param = BENEFICIARY;
             break;
         case BENEFICIARY:  // to
             handle_beneficiary(msg, context);
             context->next_param = NONE;
+            // context->skip = 1;
             break;
         case NONE:
             break;
@@ -41,7 +43,7 @@ static void handle_mint_token(ethPluginProvideParameter_t *msg, poap_parameters_
 
 void handle_provide_parameter(void *parameters) {
     ethPluginProvideParameter_t *msg = (ethPluginProvideParameter_t *) parameters;
-    poap_parameters_t *context = (poap_parameters_t *) msg->pluginContext;
+    context_t *context = (context_t *) msg->pluginContext;
 
     msg->result = ETH_PLUGIN_RESULT_OK;
 
@@ -56,12 +58,13 @@ void handle_provide_parameter(void *parameters) {
                    msg->parameterOffset);
             return;
         }
-        context->offset = 0;  // Reset offset
+        context->offset = 0;
         switch (context->selectorIndex) {
             case MINT_TOKEN:
                 handle_mint_token(msg, context);
+                break;
             default:
-                PRINTF("Selector Index %d not supported\n", context->selectorIndex);
+                PRINTF("Selector Index not supported: %d\n", context->selectorIndex);
                 msg->result = ETH_PLUGIN_RESULT_ERROR;
                 break;
         }
