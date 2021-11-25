@@ -41,7 +41,7 @@ extern const uint8_t *const POAP_SELECTORS[NUM_SELECTORS];
 typedef struct context_t {
     // For display.
     uint8_t beneficiary[ADDRESS_LENGTH];
-    uint8_t poap_token[PARAMETER_LENGTH]; // not crypto token dedicated poap token value int number
+    uint8_t poap_token[ADDRESS_LENGTH]; // not crypto token dedicated poap token value int number
     char ticker[MAX_TICKER_LEN];
     uint8_t decimals;
 

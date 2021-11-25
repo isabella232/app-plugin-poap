@@ -14,7 +14,7 @@ static void handle_token(const ethPluginProvideParameter_t *msg,
     copy_parameter(context->poap_token, sizeof(context->poap_token), msg->parameter);
 }
 
-static void handle_beneficiary(const ethPluginProvideParameter_t *msg, context_t *context) {
+static void handle_beneficiary(const ethPluginProvideParameter_t *msg, poap_parameters_t *context) {
     memset(context->beneficiary, 0, sizeof(context->beneficiary));
     memcpy(context->beneficiary,
            &msg->parameter[PARAMETER_LENGTH - ADDRESS_LENGTH],
