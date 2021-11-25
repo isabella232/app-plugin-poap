@@ -6,7 +6,7 @@
 
 #define NUM_SELECTORS        1
 #define PLUGIN_NAME          "Poap"
-#define TOKEN_RECEIVED_FOUND 1 << 1
+#define TOKEN_FOUND 1 << 1
 #define SELECTOR_SIZE        4
 #define PARAMETER_LENGTH     32
 #define RUN_APPLICATION      1
@@ -23,16 +23,15 @@ typedef enum {
 // Enumeration used to parse the smart contract data.
 typedef enum {
     EVENT_ID,
-    TOKEN_RECEIVED,
+    TOKEN,
     BENEFICIARY,
     NONE,
 } parameter;
 
 typedef enum {
-    MINT_SCREEN,
     TOKEN_SCREEN,
-    WARN_SCREEN,
     BENEFICIARY_SCREEN,
+    WARN_SCREEN,
     ERROR,
 } screens_t;
 
@@ -42,7 +41,7 @@ extern const uint8_t *const POAP_SELECTORS[NUM_SELECTORS];
 typedef struct context_t {
     // For display.
     uint8_t beneficiary[ADDRESS_LENGTH];
-    uint8_t token_received[ADDRESS_LENGTH];
+    uint8_t poap_token[PARAMETER_LENGTH]; // not crypto token dedicated poap token value int number
     char ticker[MAX_TICKER_LEN];
     uint8_t decimals;
 
