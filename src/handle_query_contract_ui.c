@@ -1,21 +1,15 @@
 #include "poap_plugin.h"
 
-// Set UI for "Mint" screen.
-static void set_mint_ui(ethQueryContractUI_t *msg, context_t *context) {
-    strlcpy(msg->title, "Mint", msg->titleLength);
-    strlcpy(msg->msg, "POAP", msg->msgLength);
-}
-
 // Set UI for "Token" screen.
 static void set_token_ui(ethQueryContractUI_t *msg, context_t *context) {
     strlcpy(msg->title, "Token", msg->titleLength);
 
-    amountToString(context->token_received,
-                   sizeof(context->token_received),
-                   context->decimals,
-                   context->ticker,
-                   msg->msg,
-                   msg->msgLength);
+    amountToString(context->poap_token,
+            sizeof(context->poap_token),
+            0,
+            "",
+            msg->msg,
+            msg->msgLength);
 }
 
 // Set UI for "Beneficiary" screen.
@@ -38,24 +32,17 @@ static void set_warning_ui(ethQueryContractUI_t *msg,
 // Helper function that returns the enum corresponding to the screen that should be displayed.
 static screens_t get_screen(const ethQueryContractUI_t *msg, const context_t *context) {
     uint8_t index = msg->screenIndex;
-
-    bool token_received_found = context->tokens_found & TOKEN_RECEIVED_FOUND;
-    bool token_received_not_found = !token_received_found;
+    
     switch (index) {
         case 0:
-            if (token_received_found) {
-                return TOKEN_SCREEN;
-            } else if (token_received_not_found) {
-                return WARN_SCREEN;
-            }
+            return TOKEN_SCREEN;
             break;
         case 1:
-            if (token_received_found) {
-                return BENEFICIARY_SCREEN;
-            } else if (token_received_not_found) {
-                return WARN_SCREEN;
-            }
+            return BENEFICIARY_SCREEN;
             break;
+        // case 2:
+        //     return WARN_SCREEN;
+        //     break;
         default:
             return ERROR;
             break;
@@ -73,9 +60,6 @@ void handle_query_contract_ui(void *parameters) {
     screens_t screen = get_screen(msg, context);
 
     switch (screen) {
-        case MINT_SCREEN:
-            set_mint_ui(msg, context);
-            break;
         case TOKEN_SCREEN:
             set_token_ui(msg, context);
             break;
