@@ -4,12 +4,7 @@
 static void set_token_ui(ethQueryContractUI_t *msg, context_t *context) {
     strlcpy(msg->title, "Token", msg->titleLength);
 
-    amountToString(context->poap_token,
-                   sizeof(context->poap_token),
-                   0,
-                   "",
-                   msg->msg,
-                   msg->msgLength);
+    amountToString(context->token_id, sizeof(context->token_id), 0, "", msg->msg, msg->msgLength);
 }
 
 // Set UI for "Beneficiary" screen.
@@ -32,17 +27,23 @@ static void set_warning_ui(ethQueryContractUI_t *msg,
 // Helper function that returns the enum corresponding to the screen that should be displayed.
 static screens_t get_screen(const ethQueryContractUI_t *msg, const context_t *context) {
     uint8_t index = msg->screenIndex;
+    bool token_not_found = !context->token_id;
 
     switch (index) {
         case 0:
-            return TOKEN_SCREEN;
+            if (!token_not_found) {
+                return TOKEN_SCREEN;
+            } else if (token_not_found) {
+                return WARN_SCREEN;
+            }
             break;
         case 1:
-            return BENEFICIARY_SCREEN;
+            if (!token_not_found) {
+                return BENEFICIARY_SCREEN;
+            } else if (token_not_found) {
+                return WARN_SCREEN;
+            }
             break;
-        // case 2:
-        //     return WARN_SCREEN;
-        //     break;
         default:
             return ERROR;
             break;

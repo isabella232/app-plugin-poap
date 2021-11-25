@@ -9,7 +9,7 @@ const sim_options_generic = {
   logging: true,
   X11: true,
   startDelay: 5000,
-  custom: "",
+  custom: "-k 2.0",
 };
 
 const Resolve = require("path").resolve;

@@ -2,12 +2,13 @@
 
 // Copies the whole parameter (32 bytes long) from `src` to `dst`.
 // Useful for numbers, data...
-static void copy_parameter(uint8_t *dst, size_t dst_len, uint8_t *src) {
+static void copy_parameter(uint8_t *dst, uint8_t *src) {
     memcpy(dst, src, PARAMETER_LENGTH);
 }
-// Copy token sent parameter to poap_token
+
+// Copy token sent parameter to token_id
 static void handle_token(const ethPluginProvideParameter_t *msg, context_t *context) {
-    copy_parameter(context->poap_token, sizeof(context->poap_token), msg->parameter);
+    copy_parameter(context->token_id, msg->parameter);
 }
 
 static void handle_beneficiary(const ethPluginProvideParameter_t *msg, context_t *context) {
@@ -23,14 +24,13 @@ static void handle_mint_token(ethPluginProvideParameter_t *msg, context_t *conte
         case EVENT_ID:
             context->next_param = TOKEN;
             break;
-        case TOKEN:  // path[1] -> id of the token received
+        case TOKEN:  // id of the token received
             handle_token(msg, context);
             context->next_param = BENEFICIARY;
             break;
         case BENEFICIARY:  // to
             handle_beneficiary(msg, context);
             context->next_param = NONE;
-            // context->skip = 1;
             break;
         case NONE:
             break;
@@ -58,7 +58,7 @@ void handle_provide_parameter(void *parameters) {
                    msg->parameterOffset);
             return;
         }
-        context->offset = 0;
+        context->offset = 0;  // Reset offset
         switch (context->selectorIndex) {
             case MINT_TOKEN:
                 handle_mint_token(msg, context);
