@@ -17,6 +17,19 @@ static void set_beneficiary_ui(ethQueryContractUI_t *msg, context_t *context) {
     getEthAddressStringFromBinary(context->beneficiary, msg->msg + 2, msg->pluginSharedRW->sha3, 0);
 }
 
+// Set UI for "From Address" screen.
+static void set_from_address_ui(ethQueryContractUI_t *msg, context_t *context) {
+    strlcpy(msg->title, "From Address", msg->titleLength);
+
+    msg->msg[0] = '0';
+    msg->msg[1] = 'x';
+
+    getEthAddressStringFromBinary(context->from_address,
+                                  msg->msg + 2,
+                                  msg->pluginSharedRW->sha3,
+                                  0);
+}
+
 // Set UI for "Warning" screen.
 static void set_warning_ui(ethQueryContractUI_t *msg,
                            const context_t *context __attribute__((unused))) {
@@ -38,12 +51,20 @@ static screens_t get_screen(const ethQueryContractUI_t *msg, const context_t *co
             }
             break;
         case 1:
+            if (!token_not_found && context->selectorIndex == MINT_TOKEN) {
+                return BENEFICIARY_SCREEN;
+            } else if (!token_not_found) {
+                return FROM_ADDRESS_SCREEN;
+            } else if (token_not_found) {
+                return WARN_SCREEN;
+            }
+            break;
+        case 2:
             if (!token_not_found) {
                 return BENEFICIARY_SCREEN;
             } else if (token_not_found) {
                 return WARN_SCREEN;
             }
-            break;
         default:
             return ERROR;
             break;
@@ -61,6 +82,9 @@ void handle_query_contract_ui(void *parameters) {
     screens_t screen = get_screen(msg, context);
 
     switch (screen) {
+        case FROM_ADDRESS_SCREEN:
+            set_from_address_ui(msg, context);
+            break;
         case TOKEN_SCREEN:
             set_token_ui(msg, context);
             break;

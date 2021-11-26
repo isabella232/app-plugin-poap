@@ -6,10 +6,13 @@
             "contractName": "PoapDelegatedMint",
             "selectors": {
                 "0x3da5b8f0": {
-                    "erc20OfInterest": [
-                        "receiver"
-                    ],
+                    "erc20OfInterest": [],
                     "method": "mintToken",
+                    "plugin": "Poap"
+                },
+                "0x42842e0e": {
+                    "erc20OfInterest": [],
+                    "method": "safeTransferFrom",
                     "plugin": "Poap"
                 }
             }
