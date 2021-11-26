@@ -51,19 +51,20 @@ static screens_t get_screen(const ethQueryContractUI_t *msg, const context_t *co
             }
             break;
         case 1:
-            if (!token_not_found) {
+            if (!token_not_found && context->selectorIndex == MINT_TOKEN) {
                 return BENEFICIARY_SCREEN;
+            } else if (!token_not_found) {
+                return FROM_ADDRESS_SCREEN;
             } else if (token_not_found) {
                 return WARN_SCREEN;
             }
             break;
         case 2:
             if (!token_not_found) {
-                return FROM_ADDRESS_SCREEN;
+                return BENEFICIARY_SCREEN;
             } else if (token_not_found) {
                 return WARN_SCREEN;
             }
-            break;
         default:
             return ERROR;
             break;
