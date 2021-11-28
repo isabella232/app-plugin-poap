@@ -10,10 +10,7 @@ void handle_init_contract(void *parameters) {
     }
 
     if (msg->pluginContextLength < sizeof(context_t)) {
-        PRINTF("LOU: %d\n", sizeof(context_t));
-        PRINTF("LOU: %d\n", msg->pluginContextLength);
         PRINTF("Plugin parameters structure is bigger than allowed size\n");
-        // msg->result = ETH_PLUGIN_RESULT_ERROR;
         return;
     }
 
@@ -24,7 +21,6 @@ void handle_init_contract(void *parameters) {
     uint8_t i;
     for (i = 0; i < NUM_SELECTORS; i++) {
         if (memcmp((uint8_t *) PIC(POAP_SELECTORS[i]), msg->selector, SELECTOR_SIZE) == 0) {
-            PRINTF("LOU: %d\n", context->selectorIndex);
             context->selectorIndex = i;
             break;
         }
