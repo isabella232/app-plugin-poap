@@ -22,3 +22,4 @@ const devices = [
 
 devices.forEach((device) =>
   processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, signedPlugin)
+);
