@@ -7,7 +7,7 @@ const rawTxHex = "0x02f90172010684625900808518ae17a40083055d16946f2235864cf89707
 // function create transaction -> serializedTx
 const testLabel = "Mint Token"; // <= Name of the test
 const testDirSuffix = "mint_token"; // <= directory to compare device snapshots to
-
+const signedPlugin = true
 const devices = [
   {
     name: "nanos",
@@ -22,5 +22,5 @@ const devices = [
 ];
 
 devices.forEach((device) =>
-  processTest(device, contractName, testLabel, testDirSuffix, rawTxHex) // tester si on reçoit rawTx ou serializedTx
+  processTest(device, contractName, testLabel, testDirSuffix, rawTxHex, signedPlugin) // tester si on reçoit rawTx ou serializedTx
 );
